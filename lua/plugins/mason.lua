@@ -11,6 +11,7 @@ return {
       "stylua",
       "shfmt",
       "pyright",
+      "isort",
     },
   },
   ---@param opts MasonSettings | {ensure_installed: string[]}
