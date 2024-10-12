@@ -1,40 +1,52 @@
 return {
   {
-
-    -- Setup null-ls for isort
-    require("null-ls").setup({
-      sources = {
-        require("null-ls").builtins.formatting.isort,
-      },
-    }),
-  },
-  {
     "neovim/nvim-lspconfig",
-    lazy = false,
-    opts = function(_, opts)
-      local servers = { "pyright", "ruff", "tsserver" }
-      for _, server in ipairs(servers) do
-        opts.servers[server] = opts.servers[server] or {}
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      local lspconfig = require("lspconfig")
+      local on_attach = function(client, bufnr)
+        -- Define keybindings or other LSP specific settings here
       end
 
-      -- Additional configuration for Python servers
-      opts.servers.pyright = {
-        settings = {
-          filetypes = { "python" }, -- Limit to Python files
-        },
-      }
-      opts.servers.ruff = {
-        settings = {
-          filetypes = { "python" }, -- Limit to Python files
-        },
-      }
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
-      -- Additional configuration for JavaScript/TypeScript
-      opts.servers.tsserver = {
+      -- Set up Rust Analyzer
+      lspconfig.rust_analyzer.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
         settings = {
-          filetypes = { "javascript", "typescript" }, -- Limit to JavaScript and TypeScript files
+          ["rust-analyzer"] = {},
         },
-      }
+      })
+
+      -- Set up Pyright (Python)
+      lspconfig.pyright.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+        settings = {
+          python = {
+            analysis = {
+              autoSearchPaths = true,
+              useLibraryCodeForTypes = true,
+              diagnosticMode = "workspace", -- Use "workspace" for broader diagnostics
+            },
+          },
+        },
+      })
+
+      -- Set up Ruff (Python linting)
+      lspconfig.ruff_lsp.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+      })
+
+      -- Set up tsserver (JavaScript/TypeScript)
+      lspconfig.tsserver.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+        filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
+      })
     end,
   },
 }

@@ -12,6 +12,7 @@ return {
       "shfmt",
       "pyright",
       "isort",
+      "rust-analyzer",
     },
   },
   ---@param opts MasonSettings | {ensure_installed: string[]}
