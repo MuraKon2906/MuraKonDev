@@ -13,6 +13,8 @@ return {
       "pyright",
       "isort",
       "rust-analyzer",
+      "biome",
+      "typescript-language-server",
     },
   },
   ---@param opts MasonSettings | {ensure_installed: string[]}
