@@ -1,29 +1,28 @@
--- plugins/null-ls.lua
-local M = {
+return {
   "jose-elias-alvarez/null-ls.nvim",
-  event = { "BufReadPre", "BufNewFile" },
-  dependencies = { "mason.nvim" },
-  opts = function()
+  config = function()
     local null_ls = require("null-ls")
-    local formatting = null_ls.builtins.formatting
-    local diagnostics = null_ls.builtins.diagnostics
-    local code_actions = null_ls.builtins.code_actions
-    local completion = null_ls.builtins.completion
-    return {
+    null_ls.setup({
       sources = {
-        formatting.stylua,
-        formatting.prettier,
-        formatting.eslint,
-        formatting.fish_indent,
-        -- diagnostics.eslint,
-        diagnostics.fish,
-        -- diagnostics.tsc,
-        -- code_actions.eslint,
-        code_actions.gitsigns,
-        completion.spell,
+        null_ls.builtins.formatting.stylua,
+        null_ls.builtins.formatting.prettier,
+        null_ls.builtins.diagnostics.eslint,
+        null_ls.builtins.code_actions.eslint,
+        null_ls.builtins.completion.spell,
+        null_ls.builtins.formatting.isort,
       },
-    }
+      on_attach = function(client, bufnr)
+        if client.supports_method("textDocument/formatting") then
+          vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            group = vim.api.nvim_create_augroup("LspFormatting", {}),
+            buffer = bufnr,
+            callback = function()
+              vim.lsp.buf.format({ bufnr = bufnr })
+            end,
+          })
+        end
+      end,
+    })
   end,
 }
-
-return M

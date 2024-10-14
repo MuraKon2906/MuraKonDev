@@ -48,7 +48,7 @@ return {
         filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
       })
 
-      -- Set up tsserver (JavaScript/TypeScript)
+      -- Set up biome (JavaScript/TypeScript)
       lspconfig.biome.setup({
         on_attach = on_attach,
         capabilities = capabilities,
