@@ -11,7 +11,9 @@ return {
       "shfmt",
       "pyright",
       "biome",
-      "alex"
+      "alex",
+      "isort",
+      "stylua",
     },
   },
   ---@param opts MasonSettings | {ensure_installed: string[]}

@@ -16,6 +16,12 @@ return {
           "pyright",
           "rust_analyzer",
           "ts_ls",
+          "jsonls",
+          "bashls",
+          "yamlls",
+          --"solargraph",
+          "tailwindcss",
+          "html",
         },
       })
     end,
