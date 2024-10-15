@@ -1,60 +1,68 @@
 return {
   {
-    "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
+    "williamboman/mason.nvim",
+    lazy = false,
     config = function()
+      require("mason").setup()
+    end,
+  },
+  {
+    "williamboman/mason-lspconfig.nvim",
+    lazy = false,
+    config = function()
+      require("mason-lspconfig").setup({
+        ensure_installed = {
+          "lua_ls",
+          "pyright",
+          "rust_analyzer",
+          "ts_ls",
+        },
+      })
+    end,
+  },
+  {
+    "neovim/nvim-lspconfig",
+    lazy = false,
+    config = function()
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
       local lspconfig = require("lspconfig")
-      local on_attach = function(client, bufnr)
-        -- Define keybindings or other LSP specific settings here
-      end
-
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
-
-      -- Set up Rust Analyzer
-      lspconfig.rust_analyzer.setup({
-        on_attach = on_attach,
+      lspconfig.tailwindcss.setup({
         capabilities = capabilities,
-        settings = {
-          ["rust-analyzer"] = {},
-        },
+      })
+      lspconfig.ts_ls.setup({
+        capabilities = capabilities,
       })
 
-      -- Set up Pyright (Python)
       lspconfig.pyright.setup({
-        on_attach = on_attach,
-        capabilities = capabilities,
-        settings = {
-          python = {
-            analysis = {
-              autoSearchPaths = true,
-              useLibraryCodeForTypes = true,
-              diagnosticMode = "workspace", -- Use "workspace" for broader diagnostics
-            },
-          },
-        },
-      })
-
-      -- Set up Ruff (Python linting)
-      lspconfig.ruff_lsp.setup({
-        on_attach = on_attach,
         capabilities = capabilities,
       })
 
-      -- Set up tsserver (JavaScript/TypeScript)
-      lspconfig.tsserver.setup({
-        on_attach = on_attach,
+      lspconfig.jsonls.setup({
         capabilities = capabilities,
-        filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
+      })
+      lspconfig.bashls.setup({
+        capabilities = capabilities,
+      })
+      lspconfig.yamlls.setup({
+        capabilities = capabilities,
+      })
+      lspconfig.solargraph.setup({
+        capabilities = capabilities,
+      })
+      lspconfig.html.setup({
+        capabilities = capabilities,
+      })
+      lspconfig.lua_ls.setup({
+        capabilities = capabilities,
       })
 
-      -- Set up biome (JavaScript/TypeScript)
-      lspconfig.biome.setup({
-        on_attach = on_attach,
-        capabilities = capabilities,
-
-        filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
-      })
+      vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
+      vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
+      vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
+      vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
+      vim.keymap.set("n", "<leader>rn", vim.lsp.buf.code_action, {})
+      vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, {})
     end,
   },
 }
