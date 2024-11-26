@@ -19,6 +19,7 @@ return {
           "jsonls",
           "bashls",
           "yamlls",
+          "ast_grep",
           --"solargraph",
           "tailwindcss",
           "html",
@@ -63,10 +64,14 @@ return {
       lspconfig.html.setup({
         capabilities = capabilities,
       })
+
       lspconfig.lua_ls.setup({
         capabilities = capabilities,
       })
 
+      -- lspconfig.rust_analyzer.setup({ -- for rust
+      --   capabilities = capabilities,
+      -- })
       -- Clangd-specific setup
       lspconfig.clangd.setup({
         capabilities = capabilities,

@@ -16,8 +16,7 @@ local plugins = {
             config = {
               workspaces = {
                 notes = "~/notes",
-                monica_prj = "~/monica",
-                seldon = "~/MuraKonNotes/Seldon/",
+                rust_notes = "~/MuraKonNotes/Rust/",
               },
             },
           },
@@ -34,7 +33,7 @@ local plugins = {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = {
-      ensure_installed = { "norg", "lua", "python", "html" }, -- Ensure norg parser is installed
+      ensure_installed = { "norg", "lua", "python", "html", "rust" }, -- Ensure norg parser is installed
     },
   },
 }
