@@ -22,6 +22,7 @@ return {
           --"solargraph",
           "tailwindcss",
           "html",
+          "clangd",
         },
       })
     end,
@@ -31,6 +32,9 @@ return {
     lazy = false,
     config = function()
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+      -- Ensure clangd uses proper offsetEncoding
+      capabilities.offsetEncoding = { "utf-16" }
 
       local lspconfig = require("lspconfig")
       lspconfig.tailwindcss.setup({
@@ -63,6 +67,13 @@ return {
         capabilities = capabilities,
       })
 
+      -- Clangd-specific setup
+      lspconfig.clangd.setup({
+        capabilities = capabilities,
+        cmd = { "clangd", "--offset-encoding=utf-16" }, -- Ensure offset encoding
+        filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
+        root_dir = lspconfig.util.root_pattern("compile_commands.json", ".git"),
+      })
       vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
       vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
       vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
