@@ -17,6 +17,7 @@ local plugins = {
               workspaces = {
                 notes = "~/notes",
                 rust_notes = "~/MuraKonNotes/Rust/",
+                tips = "~/MuraKonNotes/Tips",
               },
             },
           },
