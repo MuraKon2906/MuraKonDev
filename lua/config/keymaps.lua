@@ -5,5 +5,4 @@
 -- Nvim DAP
 --
 local map = vim.keymap.set
--- rustaceanvim
-map("n", "<Leader>dt", "<cmd>lua vim.cmd('RustLsp testables')<CR>", { desc = "Debugger testables" })
+
